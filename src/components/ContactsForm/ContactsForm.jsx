@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import s from './ContactsForm.module.css';
+import addContact from '../../redux/actions';
+import notification from '../../services/notification';
 
-const ContactsForm = ({ onSubmit, onSubmitError }) => {
+const ContactsForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
 
   const handleChangeForm = e => {
     const { name, value } = e.target;
@@ -23,14 +26,14 @@ const ContactsForm = ({ onSubmit, onSubmitError }) => {
   const handleSubmitForm = e => {
     e.preventDefault();
     if (name.trim() === '') {
-      onSubmitError('Contact name is missing');
+      notification('Contact name is missing');
       return;
     }
     if (number.trim() === '') {
-      onSubmitError('Contact number is missing');
+      notification('Contact number is missing');
       return;
     }
-    onSubmit({ name, number });
+    dispatch(addContact(name, number));
     resetForm();
   };
 
@@ -72,11 +75,6 @@ const ContactsForm = ({ onSubmit, onSubmitError }) => {
       </button>
     </form>
   );
-};
-
-ContactsForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  onSubmitError: PropTypes.func.isRequired,
 };
 
 export default ContactsForm;
