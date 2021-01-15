@@ -72,10 +72,8 @@ const ContactsForm = ({ addContact }) => {
   );
 };
 
-const mapStateToProps = () => null;
-
 const mapDispatchToProps = dispatch => ({
   addContact: (name, number) => dispatch(addContact(name, number)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactsForm);
+export default connect(null, mapDispatchToProps)(ContactsForm);

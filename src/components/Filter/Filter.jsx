@@ -1,7 +1,8 @@
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { FiSearch } from 'react-icons/fi';
 import { IconContext } from 'react-icons';
 import s from './Filter.module.css';
+import { filterContact } from '../../redux/actions';
 
 const Filter = ({ value, onFilter }) => {
   return (
@@ -25,9 +26,12 @@ const Filter = ({ value, onFilter }) => {
   );
 };
 
-Filter.propTypes = {
-  value: PropTypes.string.isRequired,
-  onFilter: PropTypes.func.isRequired,
-};
+const mapStateToProps = state => ({
+  value: state.filter,
+});
 
-export default Filter;
+const mapDispatchToProps = dispatch => ({
+  onFilter: e => dispatch(filterContact(e.target.value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);

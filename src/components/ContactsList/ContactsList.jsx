@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import s from './ContactsList.module.css';
 import ContactItem from '../ContactItem/ContactItem';
-import { deleteContact } from '../../redux/actions';
+import { deleteContact, updateFilter } from '../../redux/actions';
 
 const ContactsList = ({ contacts, onDelete }) => {
   return (
@@ -19,12 +19,17 @@ const ContactsList = ({ contacts, onDelete }) => {
   );
 };
 
-const mapStateToProps = ({ items }) => ({
-  contacts: items,
+const mapStateToProps = ({ items, filter }) => ({
+  contacts: items.filter(({ name }) =>
+    name.toLowerCase().includes(filter.toLowerCase()),
+  ),
 });
 
 const mapDispatchToProps = dispatch => ({
-  onDelete: id => dispatch(deleteContact(id)),
+  onDelete: id => {
+    dispatch(deleteContact(id));
+    dispatch(updateFilter(''));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactsList);

@@ -20,4 +20,14 @@ const deleteContact = id => ({
   payload: id,
 });
 
-export { addContact, setContact, deleteContact };
+const filterContact = value => ({
+  type: types.FILTER,
+  payload: value,
+});
+
+const updateFilter = value => ({
+  type: types.UPDATE,
+  payload: value,
+});
+
+export { addContact, setContact, deleteContact, filterContact, updateFilter };
