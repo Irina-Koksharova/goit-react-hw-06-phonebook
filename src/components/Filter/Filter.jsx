@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FiSearch } from 'react-icons/fi';
 import { IconContext } from 'react-icons';
 import s from './Filter.module.css';
-import { filterContact } from '../../redux/actions';
+import { filterContacts } from '../../redux/actions';
 
 const Filter = () => {
   const value = useSelector(state => state.filter);
@@ -22,7 +22,7 @@ const Filter = () => {
         className={s.input}
         id="input"
         value={value}
-        onChange={e => dispatch(filterContact(e.target.value))}
+        onChange={e => dispatch(filterContacts(e.target.value))}
         autoComplete="off"
       ></input>
     </>

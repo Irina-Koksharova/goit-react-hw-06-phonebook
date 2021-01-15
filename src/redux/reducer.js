@@ -2,9 +2,8 @@ import { createReducer } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import {
   addContact,
-  setContact,
   deleteContact,
-  filterContact,
+  filterContacts,
   updateFilter,
 } from './actions';
 import notification from '../services/notification';
@@ -19,14 +18,12 @@ const items = createReducer(initialContacts, {
       ? [action.payload, ...state]
       : notification(`${action.payload.name} is already in your contacts`);
   },
-  [setContact]: (state, action) =>
-    window.localStorage.setItem('contacts', JSON.stringify(action.payload)),
   [deleteContact]: (state, action) =>
     state.filter(({ id }) => id !== action.payload),
 });
 
 const filter = createReducer('', {
-  [filterContact]: (state, action) => action.payload,
+  [filterContacts]: (state, action) => action.payload,
   [updateFilter]: (state, action) => action.payload,
 });
 

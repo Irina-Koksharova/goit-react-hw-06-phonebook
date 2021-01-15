@@ -8,9 +8,8 @@ const addContact = createAction('add', (name, number) => ({
     number,
   },
 }));
-const setContact = createAction('set');
 const deleteContact = createAction('delete');
-const filterContact = createAction('changeFilter');
+const filterContacts = createAction('changeFilter');
 const updateFilter = createAction('updateFilter');
 
-export { addContact, setContact, deleteContact, filterContact, updateFilter };
+export { addContact, deleteContact, filterContacts, updateFilter };
