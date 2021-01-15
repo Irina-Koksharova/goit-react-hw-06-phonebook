@@ -10,4 +10,14 @@ const addContact = (name, number) => ({
   },
 });
 
-export default addContact;
+const setContact = contacts => ({
+  type: types.SET,
+  payload: contacts,
+});
+
+const deleteContact = id => ({
+  type: types.DELETE,
+  payload: id,
+});
+
+export { addContact, setContact, deleteContact };

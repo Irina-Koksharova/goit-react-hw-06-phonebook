@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import s from './ContactsForm.module.css';
-import addContact from '../../redux/actions';
+import { addContact } from '../../redux/actions';
 import notification from '../../services/notification';
 
-const ContactsForm = () => {
+const ContactsForm = ({ addContact }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const dispatch = useDispatch();
 
   const handleChangeForm = e => {
     const { name, value } = e.target;
@@ -33,11 +32,7 @@ const ContactsForm = () => {
       notification('Contact number is missing');
       return;
     }
-    dispatch(addContact(name, number));
-    resetForm();
-  };
-
-  const resetForm = () => {
+    addContact(name, number);
     setName('');
     setNumber('');
   };
@@ -77,4 +72,10 @@ const ContactsForm = () => {
   );
 };
 
-export default ContactsForm;
+const mapStateToProps = () => null;
+
+const mapDispatchToProps = dispatch => ({
+  addContact: (name, number) => dispatch(addContact(name, number)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactsForm);

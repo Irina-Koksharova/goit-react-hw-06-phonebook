@@ -1,4 +1,4 @@
-// import { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Container from '../../components/Container';
@@ -6,16 +6,10 @@ import Section from '../Section/Section';
 import ContactsForm from '../ContactsForm';
 // import Filter from '../Filter';
 import ContactsList from '../ContactsList';
+import { setContact } from '../../redux/actions';
 
-const App = () => {
-  // const [contacts, setContacts] = useState(() =>
-  //   JSON.parse(localStorage.getItem('contacts') ?? initialContacts),
-  // );
-  // const [filter, setFilter] = useState('');
-
-  // useEffect(() => {
-  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [contacts]);
+const App = ({ contacts, setContact }) => {
+  setContact(contacts);
 
   // const handleChangeFilter = e => {
   //   setFilter(e.target.value);
@@ -39,15 +33,23 @@ const App = () => {
         <ToastContainer autoClose={3000} limit={1} style={{ width: '352px' }} />
       </Section>
 
-      {/* {contacts.length > 0 && ( */}
-      <Section>
-        <h2>Contacts</h2>
-        {/* <Filter value={filter} onFilter={handleChangeFilter} /> */}
-        <ContactsList />
-      </Section>
-      {/* )} */}
+      {contacts.length > 0 && (
+        <Section>
+          <h2>Contacts</h2>
+          {/* <Filter value={filter} onFilter={handleChangeFilter} /> */}
+          <ContactsList />
+        </Section>
+      )}
     </Container>
   );
 };
 
-export default App;
+const mapStateToProps = state => ({
+  contacts: state.items,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setContact: contacts => dispatch(setContact(contacts)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
