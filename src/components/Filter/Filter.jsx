@@ -1,10 +1,13 @@
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { FiSearch } from 'react-icons/fi';
 import { IconContext } from 'react-icons';
 import s from './Filter.module.css';
 import { filterContact } from '../../redux/actions';
 
-const Filter = ({ value, onFilter }) => {
+const Filter = () => {
+  const value = useSelector(state => state.filter);
+  const dispatch = useDispatch();
+
   return (
     <>
       <label className={s.label} htmlFor="input">
@@ -19,19 +22,11 @@ const Filter = ({ value, onFilter }) => {
         className={s.input}
         id="input"
         value={value}
-        onChange={onFilter}
+        onChange={e => dispatch(filterContact(e.target.value))}
         autoComplete="off"
       ></input>
     </>
   );
 };
 
-const mapStateToProps = state => ({
-  value: state.filter,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onFilter: e => dispatch(filterContact(e.target.value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+export default Filter;

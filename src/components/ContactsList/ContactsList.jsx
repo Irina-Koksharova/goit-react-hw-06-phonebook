@@ -1,35 +1,34 @@
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import s from './ContactsList.module.css';
 import ContactItem from '../ContactItem/ContactItem';
 import { deleteContact, updateFilter } from '../../redux/actions';
 
-const ContactsList = ({ contacts, onDelete }) => {
+const ContactsList = () => {
+  const contacts = useSelector(({ items, filter }) => ({
+    list: items.filter(({ name }) =>
+      name.toLowerCase().includes(filter.toLowerCase()),
+    ),
+  }));
+
+  const dispatch = useDispatch();
+  const onDelete = id => {
+    dispatch(deleteContact(id));
+    dispatch(updateFilter(''));
+  };
+
   return (
     <ul className={s.list}>
-      {contacts.map(({ id, name, number }) => (
+      {contacts.list.map(({ id, name, number }) => (
         <ContactItem
           key={id}
           id={id}
           name={name}
           number={number}
-          onDelete={() => onDelete(id)}
+          onDelete={onDelete}
         />
       ))}
     </ul>
   );
 };
 
-const mapStateToProps = ({ items, filter }) => ({
-  contacts: items.filter(({ name }) =>
-    name.toLowerCase().includes(filter.toLowerCase()),
-  ),
-});
-
-const mapDispatchToProps = dispatch => ({
-  onDelete: id => {
-    dispatch(deleteContact(id));
-    dispatch(updateFilter(''));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactsList);
+export default ContactsList;

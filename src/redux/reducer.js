@@ -1,41 +1,34 @@
+import { createReducer } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import types from './types';
+import {
+  addContact,
+  setContact,
+  deleteContact,
+  filterContact,
+  updateFilter,
+} from './actions';
 import notification from '../services/notification';
 import initialContacts from '../initial-data/initialContacts.json';
 
-const items = (
-  state = JSON.parse(localStorage.getItem('contacts') ?? initialContacts),
-  { type, payload },
-) => {
-  switch (type) {
-    case types.ADD:
-      const includesContact = state.some(({ name }) => name === payload.name);
-      if (!includesContact) {
-        return [payload, ...state];
-      } else {
-        notification(`${payload.name} is already in your contacts`);
-        return state;
-      }
-    case types.SET:
-      window.localStorage.setItem('contacts', JSON.stringify(payload));
-      return state;
-    case types.DELETE:
-      return state.filter(({ id }) => id !== payload);
-    default:
-      return state;
-  }
-};
+const items = createReducer(initialContacts, {
+  [addContact]: (state, action) => {
+    const includesContact = state.some(
+      ({ name }) => name === action.payload.name,
+    );
+    return !includesContact
+      ? [action.payload, ...state]
+      : notification(`${action.payload.name} is already in your contacts`);
+  },
+  [setContact]: (state, action) =>
+    window.localStorage.setItem('contacts', JSON.stringify(action.payload)),
+  [deleteContact]: (state, action) =>
+    state.filter(({ id }) => id !== action.payload),
+});
 
-const filter = (state = '', { type, payload }) => {
-  switch (type) {
-    case types.FILTER:
-      return payload;
-    case types.UPDATE:
-      return payload;
-    default:
-      return state;
-  }
-};
+const filter = createReducer('', {
+  [filterContact]: (state, action) => action.payload,
+  [updateFilter]: (state, action) => action.payload,
+});
 
 const reducer = combineReducers({
   items,

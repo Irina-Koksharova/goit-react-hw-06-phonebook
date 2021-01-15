@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Container from '../Container';
@@ -9,8 +9,10 @@ import Filter from '../Filter';
 import ContactsList from '../ContactsList';
 import { setContact } from '../../redux/actions';
 
-const App = ({ contacts, setContact }) => {
-  setContact(contacts);
+const App = () => {
+  const contacts = useSelector(state => state.items);
+  // const dispatch = useDispatch()
+  // // dispatch(setContact(contacts))
 
   return (
     <Container>
@@ -31,12 +33,4 @@ const App = ({ contacts, setContact }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  contacts: state.items,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setContact: contacts => dispatch(setContact(contacts)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
