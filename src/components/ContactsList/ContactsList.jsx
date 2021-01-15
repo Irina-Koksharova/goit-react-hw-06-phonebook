@@ -1,24 +1,20 @@
 import { useSelector, useDispatch } from 'react-redux';
 import s from './ContactsList.module.css';
 import ContactItem from '../ContactItem/ContactItem';
-import { deleteContact, updateFilter } from '../../redux/actions';
+import { deleteContact, changeFilter } from '../../redux/actions';
+import { getVisibleContacts } from '../../redux/selectors';
 
 const ContactsList = () => {
-  const contacts = useSelector(({ items, filter }) => ({
-    list: items.filter(({ name }) =>
-      name.toLowerCase().includes(filter.toLowerCase()),
-    ),
-  }));
-
+  const contacts = useSelector(getVisibleContacts);
   const dispatch = useDispatch();
   const onDelete = id => {
     dispatch(deleteContact(id));
-    dispatch(updateFilter(''));
+    dispatch(changeFilter(''));
   };
 
   return (
     <ul className={s.list}>
-      {contacts.list.map(({ id, name, number }) => (
+      {contacts.map(({ id, name, number }) => (
         <ContactItem
           key={id}
           id={id}

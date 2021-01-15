@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getContacts } from '../../redux/selectors';
 import Container from '../Container';
 import Section from '../Section';
 import Title from '../Title';
@@ -9,7 +10,7 @@ import Filter from '../Filter';
 import ContactsList from '../ContactsList';
 
 const App = () => {
-  const contacts = useSelector(state => state.items);
+  const contacts = useSelector(getContacts);
 
   return (
     <Container>

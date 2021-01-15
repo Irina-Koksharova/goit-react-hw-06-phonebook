@@ -1,9 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { getState, saveState } from '../services/useLocalStorage';
-import reducer from './reducer';
+import { itemsReducer, filterReducer } from './reducers';
 
 const store = configureStore({
-  reducer,
+  reducer: {
+    items: itemsReducer,
+    filter: filterReducer,
+  },
+  devTools: process.env.NODE_ENV === 'development',
   preloadedState: {
     items: getState().contacts,
     filter: '',
