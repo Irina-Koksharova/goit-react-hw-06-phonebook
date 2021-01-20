@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import s from './ContactsForm.module.css';
 import { addContact } from '../../redux/actions';
+import { getContacts } from '../../redux/selectors';
 import notification from '../../services/notification';
 
 const ContactsForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
+  const contactsList = useSelector(getContacts);
   const dispatch = useDispatch();
 
   const handleChangeForm = e => {
@@ -34,7 +36,10 @@ const ContactsForm = () => {
       notification('Contact number is missing');
       return;
     }
-    dispatch(addContact(name, number));
+    const includesContact = contactsList.some(contact => contact.name === name);
+    !includesContact
+      ? dispatch(addContact(name, number))
+      : notification(`${name} is already in your contacts`);
     setName('');
     setNumber('');
   };
